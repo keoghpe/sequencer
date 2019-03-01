@@ -1,28 +1,59 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+const defaultNotes = [
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+];
+
+const App = () => {
+
+  const [notes, setNotes] = useState(defaultNotes);
+
+  return (
+    <div className="App">
+      {
+        notes.map((noteRow, index) => <NoteRow index={index}
+                                               noteRow={noteRow}
+                                               toggleCell={(index, jndex) => {
+                                                 let updatedNotes = notes.map(row => row.slice());
+
+                                                 updatedNotes[index][jndex] = !notes[index][jndex];
+                                                 setNotes(updatedNotes);
+                                               }}
+        />)
+      }
+    </div>
+  );
+
 }
+
+const NoteRow = ({index, noteRow, toggleCell}) => {
+  return (
+    <div className="NodeRow">
+      {
+        noteRow.map((active, jndex) => <Note index={index} jndex={jndex} active={active} toggleCell={toggleCell} />)
+      }
+    </div>
+  )
+}
+
+const Note = ({active, toggleCell, index, jndex}) => {
+  let activeClass = active ? 'active' : '';
+
+  return (<div className={`Note ${activeClass}`} onClick={() => {toggleCell(index, jndex)}}></div>)
+}
+
 
 export default App;
