@@ -23,6 +23,11 @@ const App = () => {
   const [column, setColumn] = useState(0);
 
   useEffect(() => {
+    // var ctx = new AudioContext();
+    // var o = ctx.createOscillator();
+    // o.frequency.value = 261.63;
+    // o.start(0);
+    // o.connect(ctx.destination);
 
     let interval = setInterval(() => {
       setColumn((column + 1) % 16)
