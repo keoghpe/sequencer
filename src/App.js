@@ -20,12 +20,20 @@ const defaultNotes = [
 const App = () => {
 
   const [notes, setNotes] = useState(defaultNotes);
+  const [column, setColumn] = useState(0);
+
+  // setInterval(() => {
+  //   setColumn((column + 1) % 16)
+  //   console.log(column)
+  // }, 1000)
+
 
   return (
     <div className="App">
       {
         notes.map((noteRow, index) => <NoteRow index={index}
                                                noteRow={noteRow}
+                                               column={column}
                                                toggleCell={(index, jndex) => {
                                                  let updatedNotes = notes.map(row => row.slice());
 
@@ -39,20 +47,21 @@ const App = () => {
 
 }
 
-const NoteRow = ({index, noteRow, toggleCell}) => {
+const NoteRow = ({index, noteRow, toggleCell, column}) => {
   return (
     <div className="NodeRow">
       {
-        noteRow.map((active, jndex) => <Note index={index} jndex={jndex} active={active} toggleCell={toggleCell} />)
+        noteRow.map((active, jndex) => <Note index={index} jndex={jndex} active={active} column={column} toggleCell={toggleCell} />)
       }
     </div>
   )
 }
 
-const Note = ({active, toggleCell, index, jndex}) => {
+const Note = ({active, toggleCell, index, jndex, column}) => {
   let activeClass = active ? 'active' : '';
+  let currentClass = jndex === column ? 'current' : '';
 
-  return (<div className={`Note ${activeClass}`} onClick={() => {toggleCell(index, jndex)}}></div>)
+  return (<div className={`Note ${activeClass} ${currentClass}`} onClick={() => {toggleCell(index, jndex)}}></div>)
 }
 
 

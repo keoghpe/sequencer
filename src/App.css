@@ -10,6 +10,11 @@
     margin-left: 3px;
 }
 
+.Note.current {
+    background-color: darkgray;
+}
+
 .Note.active {
     background-color: lawngreen;
 }
+
