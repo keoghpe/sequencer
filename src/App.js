@@ -41,7 +41,7 @@ const App = () => {
   const [column, setColumn] = useState(0);
 
   useEffect(() => {
-    const tickMs = 80;
+    const tickMs = 200;
 
     let interval = setInterval(() => {
       setColumn((column + 1) % 16)
@@ -50,12 +50,12 @@ const App = () => {
 
     notes.forEach((row, index) => {
       if(row[column] && ctx) {
-        var o = ctx.createOscillator();
-        o.frequency.value = scale[index];
+        var oscillator = ctx.createOscillator();
+        oscillator.frequency.value = scale[index];
         console.log(scale[index]);
-        o.start(ctx.currentTime);
-        o.stop(ctx.currentTime + (tickMs / 1000));
-        o.connect(ctx.destination);
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + (tickMs / 1000));
+        oscillator.connect(ctx.destination);
       }
     })
 
