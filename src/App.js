@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -22,10 +22,16 @@ const App = () => {
   const [notes, setNotes] = useState(defaultNotes);
   const [column, setColumn] = useState(0);
 
-  // setInterval(() => {
-  //   setColumn((column + 1) % 16)
-  //   console.log(column)
-  // }, 1000)
+  useEffect(() => {
+
+    let interval = setInterval(() => {
+      setColumn((column + 1) % 16)
+    }, 80)
+
+    return () => {
+      clearInterval(interval)
+    }
+  })
 
 
   return (
