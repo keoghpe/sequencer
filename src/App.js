@@ -39,34 +39,45 @@ const App = () => {
 
   const [notes, setNotes] = useState(defaultNotes);
   const [column, setColumn] = useState(0);
+  const [bpm, setBpm] = useState(120);
 
   useEffect(() => {
-    const tickMs = 200;
+    if(bpm) {
+      let tickMs = (1000 / (bpm  / 60) / 16);
 
-    let interval = setInterval(() => {
-      setColumn((column + 1) % 16)
-    }, tickMs)
+      let interval = setInterval(() => {
+        setColumn((column + 1) % 16)
+      }, tickMs)
 
 
-    notes.forEach((row, index) => {
-      if(row[column] && ctx) {
-        var oscillator = ctx.createOscillator();
-        oscillator.frequency.value = scale[index];
-        console.log(scale[index]);
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + (tickMs / 1000));
-        oscillator.connect(ctx.destination);
+      notes.forEach((row, index) => {
+        if(row[column] && ctx) {
+          var oscillator = ctx.createOscillator();
+          oscillator.frequency.value = scale[index];
+          oscillator.start(ctx.currentTime);
+          oscillator.stop(ctx.currentTime + (tickMs / 1000));
+          oscillator.connect(ctx.destination);
+        }
+      })
+
+      return () => {
+        clearInterval(interval)
       }
-    })
-
-    return () => {
-      clearInterval(interval)
     }
   })
 
 
   return (
     <div className="App">
+      <input type="text" value={bpm} onInput={e => {
+        let stringValue = e.target.value;
+        let value = parseInt(stringValue);
+        if(stringValue === '') {
+          setBpm(null)
+        } else if(!isNaN(value)) {
+          setBpm(value)
+        }
+      }}/>
       {
         notes.map((noteRow, index) => <NoteRow index={index}
                                                noteRow={noteRow}
