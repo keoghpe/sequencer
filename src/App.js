@@ -33,6 +33,7 @@ const scale = [
   138.59,
   130.81,
 ]
+let ctx = null;
 
 const App = () => {
 
@@ -46,14 +47,14 @@ const App = () => {
       setColumn((column + 1) % 16)
     }, tickMs)
 
-    var ctx = new AudioContext();
 
     notes.forEach((row, index) => {
-      if(notes[index][column]) {
+      if(row[column] && ctx) {
         var o = ctx.createOscillator();
-        o.frequency.value = scale[column];
-        o.start(0);
-        o.stop(tickMs / 1000);
+        o.frequency.value = scale[index];
+        console.log(scale[index]);
+        o.start(ctx.currentTime);
+        o.stop(ctx.currentTime + (tickMs / 1000));
         o.connect(ctx.destination);
       }
     })
@@ -99,6 +100,9 @@ const Note = ({active, toggleCell, index, jndex, column}) => {
   let currentClass = jndex === column ? 'current' : '';
 
   return (<div className={`Note ${activeClass} ${currentClass}`} onClick={() => {
+    if(ctx === null) {
+      ctx = new AudioContext();
+    }
     toggleCell(index, jndex)
   }}></div>)
 }
